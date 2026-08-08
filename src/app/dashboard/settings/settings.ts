@@ -72,6 +72,7 @@ export class SettingsComponent implements OnInit {
     if (this.whatsappPhone) {
       this.loadSettings();
       this.loadKeywords();
+      this.checkInitialConnectionStatus(); // 👈 Verificamos si ya hay sesión activa en disco
     } else {
       this.showToast('No se encontró un número de WhatsApp vinculado a este usuario', 'warning');
     }
@@ -374,5 +375,23 @@ export class SettingsComponent implements OnInit {
       this.newKeyword.match_type = 'contains';
       this.newKeyword.reply_text = '¡Hola! Bienvenido a nuestro servicio automático. ¿En qué podemos ayudarte hoy?';
     }
+  }
+  // 💡 Verificar si ya está conectado al cargar la vista
+  checkInitialConnectionStatus() {
+    if (!this.whatsappPhone) return;
+
+    this.http.get<any>(`${this.whatsappApi}/status/${this.whatsappPhone}`).subscribe({
+      next: (res) => {
+        if (res && res.connected) {
+          this.botStatus = 'Conectado y listo';
+          this.qrCodeImage = null; // Ocultamos el QR si ya está vinculado
+        } else {
+          this.botStatus = 'Desconectado / Haz clic en Conectar';
+        }
+      },
+      error: () => {
+        this.botStatus = 'Desconectado / Haz clic en Conectar';
+      }
+    });
   }
 }
