@@ -1,0 +1,206 @@
+.login-container {
+  background: radial-gradient(circle at 50% 20%, #eff6ff 0%, #dbeafe 40%, #bfdbfe 100%);
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  .login-card-box {
+    width: 100%;
+    max-width: 440px;
+    background: #ffffff;
+    padding: 46px 40px;
+    border-radius: 28px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(30, 64, 175, 0.2), 0 0 0 1px rgba(59, 130, 246, 0.15);
+
+    // Detalle azul corporativo: Línea superior con gradiente brillante y elegante
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 50%, #93c5fd 100%);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 32px;
+
+      .logo-circle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+
+        .logo-image {
+          width: 72px;
+          height: 72px;
+          object-fit: contain;
+          filter: drop-shadow(0 8px 16px rgba(37, 99, 235, 0.25));
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+      }
+
+      h2 {
+        margin: 0 0 6px 0;
+        font-size: 1.85rem;
+        font-weight: 800;
+        // Título con un tono azul oscuro corporativo
+        color: #1e3a8a;
+        letter-spacing: -0.025em;
+      }
+
+      p {
+        margin: 0;
+        color: #475569;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        label {
+          // Etiquetas con acento en azul corporativo
+          color: #1e40af;
+          font-size: 0.85rem;
+          font-weight: 700;
+          letter-spacing: 0.01em;
+        }
+
+        .input-field-wrapper {
+          display: flex;
+          align-items: center;
+          background: #f8fafc;
+          border: 1.5px solid #cbd5e1;
+          border-radius: 14px;
+          padding: 0 16px;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+          &:focus-within {
+            background: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+
+            .input-icon {
+              color: #2563eb;
+            }
+          }
+
+          .input-icon {
+            width: 20px;
+            height: 20px;
+            // Iconos con detalle azul sutil
+            color: #3b82f6;
+            margin-right: 12px;
+            flex-shrink: 0;
+            transition: color 0.2s;
+          }
+
+          input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #0f172a;
+            padding: 14px 0;
+            outline: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+
+            &::placeholder {
+              color: #94a3b8;
+              font-weight: 400;
+            }
+          }
+
+          .eye-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: color 0.2s;
+
+            svg {
+              width: 20px;
+              height: 20px;
+            }
+
+            &:hover {
+              color: #2563eb;
+            }
+          }
+        }
+      }
+
+      .submit-btn {
+        margin-top: 10px;
+        width: 100%;
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 10px 22px -4px rgba(37, 99, 235, 0.45);
+        transition: all 0.25s ease;
+
+        &:hover {
+          background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 14px 26px -4px rgba(37, 99, 235, 0.6);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        &:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+    }
+
+    .login-footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #64748b;
+      font-size: 0.825rem;
+      font-weight: 500;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
