@@ -42,6 +42,13 @@ export class SettingsComponent implements OnInit {
     reply_text: '',
     is_active: true
   };
+  customKeyword = {
+    keyword: '',
+    match_type: 'contains',
+    response_type: 'text',
+    reply_text: '',
+    is_active: true
+  };
 
   editingKeywordId: number | null = null;
 
@@ -97,11 +104,12 @@ loadKeywords() {
   }
 
   // 💡 GUARDAR AJUSTES CON SWEETALERT2
-  saveSettings() {
+saveSettings() {
     this.isLoadingSettings = true;
     this.http.patch(`${this.settingsApi}/${this.whatsappPhone}`, this.botSetting).subscribe({
       next: () => {
         this.isLoadingSettings = false;
+        this.isSettingsDirty = false; // 👈 Bloqueamos el botón otra vez hasta nueva interacción
         Swal.fire({
           title: '¡Configuración Guardada!',
           text: 'Los ajustes generales del bot se han actualizado correctamente.',
@@ -116,6 +124,7 @@ loadKeywords() {
         this.http.post(`${this.settingsApi}/${this.whatsappPhone}`, this.botSetting).subscribe({
           next: () => {
             this.isLoadingSettings = false;
+            this.isSettingsDirty = false; // 👈 Bloqueamos el botón otra vez
             Swal.fire({
               title: '¡Configuración Creada!',
               text: 'Se han establecido los ajustes iniciales del bot con éxito.',
@@ -134,7 +143,6 @@ loadKeywords() {
       }
     });
   }
-
   // 💡 GUARDAR O ACTUALIZAR PALABRA CLAVE CON SWEETALERT2
   saveKeyword() {
     if (!this.newKeyword.keyword) {
@@ -396,5 +404,78 @@ disconnectWhatsApp() {
       }
     });
   }
-  
+  // 💡 FUNCIÓN DE ACTIVACIÓN INSTANTÁNEA (1 CLIC)
+  quickDeployRule(keyword: string, responseType: string, replyText: string) {
+    const payload = {
+      keyword: keyword,
+      match_type: 'contains',
+      response_type: responseType,
+      reply_text: replyText,
+      is_active: true
+    };
+
+    this.http.post(`${this.keywordsApi}/${this.whatsappPhone}`, payload).subscribe({
+      next: () => {
+        Swal.fire({
+          title: '¡Automatización Activada!',
+          text: `La regla para "${keyword}" ya se encuentra funcionando en el bot.`,
+          icon: 'success',
+          confirmButtonColor: '#2563eb',
+          background: '#ffffff',
+          color: '#1e3a8a',
+          customClass: { popup: 'custom-swal-popup' }
+        });
+        this.loadKeywords();
+      },
+      error: () => {
+        this.showToast('Esta regla ya se encuentra registrada o activa', 'warning');
+      }
+    });
+  }
+  // 💡 GUARDAR REGLA PERSONALIZADA FÁCIL
+  saveCustomKeyword() {
+    if (!this.customKeyword.keyword || !this.customKeyword.reply_text) {
+      this.showToast('Por favor completa ambos campos', 'warning');
+      return;
+    }
+
+    this.isLoadingKeyword = true;
+
+    this.http.post(`${this.keywordsApi}/${this.whatsappPhone}`, this.customKeyword).subscribe({
+      next: () => {
+        this.isLoadingKeyword = false;
+        this.isCustomKeywordDirty = false; // 👈 Bloqueamos el botón de nuevo
+        
+        // 💡 SweetAlert de éxito integrado
+        Swal.fire({
+          title: '¡Regla Creada!',
+          text: 'Tu nueva respuesta personalizada ya está activa en el bot.',
+          icon: 'success',
+          confirmButtonColor: '#2563eb',
+          background: '#ffffff',
+          color: '#1e3a8a',
+          customClass: { popup: 'custom-swal-popup' }
+        });
+
+        this.customKeyword.keyword = '';
+        this.customKeyword.reply_text = '';
+        this.loadKeywords();
+      },
+      error: () => {
+        this.isLoadingKeyword = false;
+        this.showToast('Error al guardar la regla personalizada', 'danger');
+      }
+    });
+  }
+  isSettingsDirty: boolean = false;
+  isCustomKeywordDirty: boolean = false;
+  // 💡 Detectar cambios en Ajustes Generales para habilitar el botón
+  onSettingsChange() {
+    this.isSettingsDirty = true;
+  }
+
+  // 💡 Detectar cambios en Reglas Personalizadas para habilitar el botón
+  onCustomKeywordChange() {
+    this.isCustomKeywordDirty = true;
+  }
 }

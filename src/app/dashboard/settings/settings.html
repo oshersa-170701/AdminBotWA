@@ -44,14 +44,14 @@
       <!-- Nombre del Bot -->
       <div style="display: flex; flex-direction: column; gap: 6px;">
         <label style="color: #1e3a8a; font-size: 0.85rem; font-weight: 700;">Nombre del Bot</label>
-        <input type="text" name="botName" [(ngModel)]="botSetting.bot_name" placeholder="Ej. Asistente Ventas"
+        <input type="text" name="botName" [(ngModel)]="botSetting.bot_name" (ngModelChange)="onSettingsChange()" placeholder="Ej. Asistente Ventas"
                style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 13px 16px; color: #0f172a; outline: none; font-size: 0.95rem; font-weight: 500;">
       </div>
 
       <!-- Mensaje de Fallback -->
       <div style="display: flex; flex-direction: column; gap: 6px;">
         <label style="color: #1e3a8a; font-size: 0.85rem; font-weight: 700;">Mensaje de Fallback (Cuando no entiende)</label>
-        <textarea name="fallbackMessage" [(ngModel)]="botSetting.fallback_message" placeholder="Lo siento, no entendí tu mensaje..." rows="3"
+        <textarea name="fallbackMessage" [(ngModel)]="botSetting.fallback_message" (ngModelChange)="onSettingsChange()" placeholder="Lo siento, no entendí tu mensaje..." rows="3"
                   style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 13px 16px; color: #0f172a; outline: none; font-size: 0.95rem; font-weight: 500; resize: vertical;"></textarea>
       </div>
 
@@ -62,7 +62,7 @@
           <span class="toggle-subtitle" style="color: #64748b; font-size: 0.82rem; font-weight: 500;">Permite que responda por sí mismo de forma autónoma</span>
         </div>
         <label style="position: relative; display: inline-block; width: 50px; height: 26px; cursor: pointer;">
-          <input type="checkbox" [(ngModel)]="botSetting.is_bot_active" style="opacity: 0; width: 0; height: 0;">
+          <input type="checkbox" [(ngModel)]="botSetting.is_bot_active" (ngModelChange)="onSettingsChange()" style="opacity: 0; width: 0; height: 0;">
           <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 26px;" [style.background-color]="botSetting.is_bot_active ? '#2563eb' : '#cbd5e1'">
             <span style="position: absolute; content: ''; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%;" [style.transform]="botSetting.is_bot_active ? 'translateX(24px)' : 'translateX(0)'"></span>
           </span>
@@ -73,12 +73,12 @@
       <div class="time-inputs-wrapper" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
         <div style="display: flex; flex-direction: column; gap: 6px;">
           <label style="color: #1e3a8a; font-size: 0.85rem; font-weight: 700;">Hora de Inicio</label>
-          <input type="time" name="startTime" [(ngModel)]="botSetting.start_time"
+          <input type="time" name="startTime" [(ngModel)]="botSetting.start_time" (ngModelChange)="onSettingsChange()"
                  style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 13px 16px; color: #0f172a; outline: none; font-size: 0.95rem; font-weight: 500;">
         </div>
         <div style="display: flex; flex-direction: column; gap: 6px;">
           <label style="color: #1e3a8a; font-size: 0.85rem; font-weight: 700;">Hora de Cierre</label>
-          <input type="time" name="endTime" [(ngModel)]="botSetting.end_time"
+          <input type="time" name="endTime" [(ngModel)]="botSetting.end_time" (ngModelChange)="onSettingsChange()"
                  style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 13px 16px; color: #0f172a; outline: none; font-size: 0.95rem; font-weight: 500;">
         </div>
       </div>
@@ -87,18 +87,21 @@
       <div class="days-selector-wrapper" style="display: flex; flex-direction: column; gap: 8px;">
         <label class="days-label" style="color: #1e3a8a; font-size: 0.85rem; font-weight: 700;">Días Laborables del Bot</label>
         <div class="days-buttons-row" style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <button type="button" (click)="toggleDay(1)" [style.background]="isDaySelected(1) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(1) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(1) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Lun</button>
-          <button type="button" (click)="toggleDay(2)" [style.background]="isDaySelected(2) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(2) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(2) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Mar</button>
-          <button type="button" (click)="toggleDay(3)" [style.background]="isDaySelected(3) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(3) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(3) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Mié</button>
-          <button type="button" (click)="toggleDay(4)" [style.background]="isDaySelected(4) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(4) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(4) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Jue</button>
-          <button type="button" (click)="toggleDay(5)" [style.background]="isDaySelected(5) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(5) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(5) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Vie</button>
-          <button type="button" (click)="toggleDay(6)" [style.background]="isDaySelected(6) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(6) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(6) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Sáb</button>
-          <button type="button" (click)="toggleDay(0)" [style.background]="isDaySelected(0) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(0) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(0) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Dom</button>
+          <button type="button" (click)="toggleDay(1); onSettingsChange()" [style.background]="isDaySelected(1) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(1) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(1) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Lun</button>
+          <button type="button" (click)="toggleDay(2); onSettingsChange()" [style.background]="isDaySelected(2) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(2) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(2) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Mar</button>
+          <button type="button" (click)="toggleDay(3); onSettingsChange()" [style.background]="isDaySelected(3) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(3) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(3) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Mié</button>
+          <button type="button" (click)="toggleDay(4); onSettingsChange()" [style.background]="isDaySelected(4) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(4) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(4) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Jue</button>
+          <button type="button" (click)="toggleDay(5); onSettingsChange()" [style.background]="isDaySelected(5) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(5) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(5) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Vie</button>
+          <button type="button" (click)="toggleDay(6); onSettingsChange()" [style.background]="isDaySelected(6) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(6) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(6) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Sáb</button>
+          <button type="button" (click)="toggleDay(0); onSettingsChange()" [style.background]="isDaySelected(0) ? '#2563eb' : '#ffffff'" [style.color]="isDaySelected(0) ? '#ffffff' : '#1e3a8a'" [style.border]="isDaySelected(0) ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1'" style="flex: 1; min-width: 42px; padding: 11px 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Dom</button>
         </div>
       </div>
 
-      <button type="button" [disabled]="isLoadingSettings" (click)="saveSettings()"
-              style="width: 100%; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; border: none; padding: 15px; border-radius: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; box-shadow: 0 10px 22px -4px rgba(37, 99, 235, 0.45); transition: background 0.2s;">
+      <!-- Botón de Guardar Ajustes (Inhabilitado por defecto) -->
+      <button type="button" [disabled]="!isSettingsDirty || isLoadingSettings" (click)="saveSettings()"
+              [style.background]="!isSettingsDirty ? '#94a3b8' : 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)'"
+              [style.cursor]="!isSettingsDirty ? 'not-allowed' : 'pointer'"
+              style="width: 100%; color: white; border: none; padding: 15px; border-radius: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; box-shadow: 0 10px 22px -4px rgba(37, 99, 235, 0.45); transition: background 0.2s;">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
         </svg>
@@ -183,114 +186,89 @@
       </div>
     </div>
 
-    <!-- Tarjeta 3: Gestión de Palabras Clave con Sugerencias Rápidas -->
+    <!-- Tarjeta 3: Automatizaciones Inteligentes y Reglas Activas -->
     <div class="custom-card" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%); padding: 32px; border-radius: 26px; border: 1px solid rgba(59, 130, 246, 0.15); border-top: 4px solid #2563eb; box-shadow: 0 25px 50px -12px rgba(30, 64, 175, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.9); display: flex; flex-direction: column; gap: 20px; position: relative; overflow: hidden; box-sizing: border-box;">
       
       <div class="card-header-title" style="display: flex; align-items: center; gap: 12px; color: #1e3a8a; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 14px;">
         <div style="width: 38px; height: 38px; background: #faf5ff; color: #2563eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #dbeafe;">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
         </div>
-        <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #1e3a8a;">{{ editingKeywordId ? 'Editar Palabra Clave' : 'Palabras Clave Automatizadas' }}</h3>
+        <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #1e3a8a;">Respuestas Automáticas Inteligentes</h3>
       </div>
 
       <p class="card-subtitle-text" style="margin: 0; color: #64748b; font-size: 0.9rem; line-height: 1.5; font-weight: 500;">
-        {{ editingKeywordId ? 'Modifica los parámetros de la regla seleccionada.' : 'Configura qué debe responder el bot cuando el cliente escriba términos específicos.' }}
+        Activa las funciones principales de tu bot con un solo clic. Sin configuraciones técnicas ni textos complicados.
       </p>
 
-      <!-- Formulario para nueva regla / edición -->
-      <div class="new-keyword-box" style="display: flex; flex-direction: column; gap: 14px; background: #ffffff; padding: 20px; border-radius: 16px; border: 1.5px solid #cbd5e1; box-shadow: 0 10px 25px -5px rgba(30, 64, 175, 0.05);">
+      <!-- 💡 TARJETAS DE ACCIÓN RÁPIDA (1 CLIC) -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
         
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-          <label style="color: #1e3a8a; font-size: 0.85rem; font-weight: 700;">Palabra clave o frase</label>
-          <input type="text" name="newKeywordText" [(ngModel)]="newKeyword.keyword" placeholder="Ej. catalogo, precio, hola..."
-                 style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 13px 16px; color: #0f172a; outline: none; font-size: 0.95rem; font-weight: 500;">
-        </div>
-
-      
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-          <span style="color: #64748b; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;">Sugerencias rápidas:</span>
-          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-            <button type="button" (click)="applySuggestion('catalogo')" style="background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Catálogo</button>
-            <button type="button" (click)="applySuggestion('cotizacion')" style="background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Cotización</button>
-            <button type="button" (click)="applySuggestion('precio')" style="background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Precio</button>
-            <button type="button" (click)="applySuggestion('asesor')" style="background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Asesor</button>
-            <button type="button" (click)="applySuggestion('hola')" style="background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Hola</button>
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 20px; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;"> Catálogo de Productos</h4>
+            <p style="margin: 0; color: #64748b; font-size: 0.82rem; line-height: 1.4;">Responde automáticamente cuando escriban "Catálogo" o "Productos".</p>
           </div>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-          <label style="color: #1e3a8a; font-size: 0.85rem; font-weight: 700;">Tipo de Coincidencia</label>
-          <select name="matchType" [(ngModel)]="newKeyword.match_type"
-                  style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 13px 16px; color: #0f172a; outline: none; font-size: 0.95rem; font-weight: 500;">
-            <option value="contains">Contiene (Flexible)</option>
-            <option value="exact">Exacta (Estricta)</option>
-          </select>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-          <label style="color: #1e3a8a; font-size: 0.85rem; font-weight: 700;">Tipo de Respuesta</label>
-          <select name="responseType" [(ngModel)]="newKeyword.response_type"
-                  style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 13px 16px; color: #0f172a; outline: none; font-size: 0.95rem; font-weight: 500;">
-            <option value="text">Texto Personalizado</option>
-            <option value="product_search">Búsqueda de Catálogo / Productos</option>
-            <option value="quote">Cotización Interactiva</option>
-          </select>
-        </div>
-
-        <p class="helper-info-text" style="margin: 0; color: #64748b; font-size: 0.82rem; line-height: 1.4; font-weight: 500;">
-          Si seleccionas Cotización o Catálogo, el bot usará un flujo automático inteligente y no requiere texto personalizado.
-        </p>
-
-        <!-- Campo dinámico si es Texto Personalizado -->
-        @if (newKeyword.response_type === 'text') {
-          <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="color: #1e3a8a; font-size: 0.85rem; font-weight: 700;">Texto de Respuesta</label>
-            <textarea name="replyText" [(ngModel)]="newKeyword.reply_text" placeholder="Escribe la respuesta del bot..." rows="3"
-                      style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 13px 16px; color: #0f172a; outline: none; font-size: 0.95rem; font-weight: 500; resize: vertical;"></textarea>
-          </div>
-        }
-
-        <div style="display: flex; gap: 12px; margin-top: 6px;">
-          <button type="button" [disabled]="isLoadingKeyword" (click)="saveKeyword()"
-                  style="flex: 1; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; border: none; padding: 14px; border-radius: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);">
-            {{ isLoadingKeyword ? 'Guardando...' : (editingKeywordId ? 'Actualizar Regla' : 'Agregar Palabra Clave') }}
+          <button type="button" (click)="quickDeployRule('catálogo', 'product_search', '')" style="background: #2563eb; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
+            Activar Catálogo
           </button>
-
-          @if (editingKeywordId) {
-            <button type="button" (click)="cancelEdit()"
-                    style="flex: 1; background: #f1f5f9; color: #475569; border: none; padding: 14px; border-radius: 14px; font-weight: 700; cursor: pointer;">
-              Cancelar
-            </button>
-          }
         </div>
+
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 20px; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;"> Cotizador Interactivo</h4>
+            <p style="margin: 0; color: #64748b; font-size: 0.82rem; line-height: 1.4;">Inicia el flujo de cotización cuando escriban "Cotización".</p>
+          </div>
+          <button type="button" (click)="quickDeployRule('cotización', 'quote', '')" style="background: #2563eb; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
+            Activar Cotizador
+          </button>
+        </div>
+
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 20px; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;"> Derivar a Asesor</h4>
+            <p style="margin: 0; color: #64748b; font-size: 0.82rem; line-height: 1.4;">Atiende cuando escriban "Asesor" o "Humano".</p>
+          </div>
+          <button type="button" (click)="quickDeployRule('asesor', 'text', 'Con mucho gusto te comunicaremos con un asesor humano en breve.')" style="background: #2563eb; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
+            Activar Asesor
+          </button>
+        </div>
+
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 20px; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;"> Saludo de Bienvenida</h4>
+            <p style="margin: 0; color: #64748b; font-size: 0.82rem; line-height: 1.4;">Responde automáticamente cuando escriban "Hola".</p>
+          </div>
+          <button type="button" (click)="quickDeployRule('hola', 'text', '¡Hola! Bienvenido a nuestro servicio automático. ¿En qué podemos ayudarte hoy?')" style="background: #2563eb; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
+            Activar Saludo
+          </button>
+        </div>
+
       </div>
 
-      <!-- Listado de palabras clave guardadas -->
-      <div class="active-rules-container" style="display: flex; flex-direction: column; gap: 14px;">
-        <h4 class="rules-title" style="margin: 0; color: #1e3a8a; font-size: 1.05rem; font-weight: 800;">Reglas Activas</h4>
+      <!-- 💡 1. REGLAS ACTIVAS (Estilo tarjetas idénticas arriba) -->
+      <div class="active-rules-container" style="display: flex; flex-direction: column; gap: 14px; margin-top: 10px;">
+        <h4 class="rules-title" style="margin: 0; color: #1e3a8a; font-size: 1.05rem; font-weight: 800;">Reglas Activas en tu Bot</h4>
 
         @if (keywords.length === 0) {
           <div style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 20px; font-weight: 500;">
-            No hay palabras clave configuradas.
+            No hay palabras clave configuradas. Haz clic arriba en cualquiera de las opciones o crea una regla personalizada abajo.
           </div>
         }
 
-        <div class="rules-scroll-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 350px; overflow-y: auto;">
+        <div class="rules-scroll-container" style="display: flex; flex-direction: column; gap: 12px; max-height: 380px; overflow-y: auto;">
           @for (k of keywords; track k.id) {
-            <div class="keyword-item-card" style="background: #ffffff; padding: 16px; border-radius: 14px; border: 1.5px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+            <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 20px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; gap: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
               
-              <div class="keyword-info-main" style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1;">
-                <div class="keyword-top-row" style="display: flex; align-items: center; gap: 10px;">
-                  <span class="kw-badge" style="background: #eff6ff; color: #2563eb; padding: 4px 10px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; border: 1px solid #dbeafe;">{{ k.keyword }}</span>
-                  <span class="match-type-tag" style="color: #64748b; font-size: 0.78rem; font-weight: 600;">
-                    {{ k.match_type === 'exact' ? 'Estricta (Exacta)' : 'Flexible (Contiene)' }}
-                  </span>
+              <div style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="background: #eff6ff; color: #2563eb; padding: 4px 10px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; border: 1px solid #dbeafe;">{{ k.keyword }}</span>
+                  <span style="color: #64748b; font-size: 0.78rem; font-weight: 600;">Flexible (Contiene)</span>
                 </div>
 
-                <div class="keyword-details-row" style="display: flex; flex-direction: column; gap: 3px;">
-                  <span class="response-type-pill" style="color: #334155; font-size: 0.82rem; font-weight: 600;">
+                <div style="display: flex; flex-direction: column; gap: 3px;">
+                  <span style="color: #334155; font-size: 0.82rem; font-weight: 600;">
                     Tipo: <strong>{{ k.response_type === 'text' ? 'Texto' : (k.response_type === 'product_search' ? 'Catálogo' : 'Cotización') }}</strong>
                   </span>
                   
@@ -303,14 +281,8 @@
                 </div>
               </div>
 
-              <!-- Botones de Acción -->
-              <div style="display: flex; gap: 8px;">
-                <button type="button" (click)="editKeyword(k)" title="Editar regla" style="background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                </button>
-                <button type="button" (click)="deleteKeyword(k.id)" title="Eliminar regla" style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;">
+              <div>
+                <button type="button" (click)="deleteKeyword(k.id)" title="Eliminar regla" style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
@@ -319,6 +291,36 @@
 
             </div>
           }
+        </div>
+      </div>
+
+      <!-- 💡 2. TARJETA DE REGLAS PERSONALIZADAS (Ubicada abajo con botón inhabilitado por defecto) -->
+      <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 24px; border-radius: 16px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); margin-top: 10px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <h4 style="margin: 0; color: #1e3a8a; font-size: 1.05rem; font-weight: 800;"> Crear Regla Personalizada</h4>
+          <p style="margin: 0; color: #64748b; font-size: 0.85rem; line-height: 1.4;">¿Quieres que el bot responda a otra palabra o pregunta específica de tu negocio? Escríbela aquí abajo.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="color: #1e3a8a; font-size: 0.82rem; font-weight: 700;">Si el cliente escribe:</label>
+            <input type="text" [(ngModel)]="customKeyword.keyword" (input)="onCustomKeywordChange()" placeholder="Ej. factura, ubicación, horario..."
+                   style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px 14px; color: #0f172a; outline: none; font-size: 0.9rem;">
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="color: #1e3a8a; font-size: 0.82rem; font-weight: 700;">El bot debe responder con este texto:</label>
+            <textarea [(ngModel)]="customKeyword.reply_text" (input)="onCustomKeywordChange()" placeholder="Escribe aquí la respuesta que enviará el bot..." rows="2"
+                      style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px 14px; color: #0f172a; outline: none; font-size: 0.9rem; resize: vertical;"></textarea>
+          </div>
+
+          <!-- Botón inhabilitado condicionalmente -->
+          <button type="button" [disabled]="!isCustomKeywordDirty || isLoadingKeyword" (click)="saveCustomKeyword()"
+                  [style.background]="!isCustomKeywordDirty ? '#94a3b8' : 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)'"
+                  [style.cursor]="!isCustomKeywordDirty ? 'not-allowed' : 'pointer'"
+                  style="color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); transition: background 0.2s;">
+            {{ isLoadingKeyword ? 'Guardando regla...' : 'Guardar Regla Personalizada' }}
+          </button>
         </div>
       </div>
 
