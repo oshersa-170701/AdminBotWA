@@ -106,8 +106,11 @@ export class SettingsComponent implements OnInit {
     return found ? found.id : null;
   }
 
-  // 💡 Alternar entre Activar / Desactivar con 1 clic
+  // 💡 Alternar entre Activar / Desactivar con 1 clic y estado de carga
   toggleQuickRule(keyword: string, responseType: string, replyText: string) {
+    if (this.activeActionKey) return; // Evitar múltiples clics simultáneos
+    this.activeActionKey = keyword;
+
     const existingId = this.getRuleId(keyword);
 
     if (existingId) {
@@ -125,6 +128,7 @@ export class SettingsComponent implements OnInit {
 
       this.http.post(`${this.keywordsApi}/${this.whatsappPhone}`, payload).subscribe({
         next: () => {
+          this.activeActionKey = null;
           Swal.fire({
             title: '¡Automatización Activada!',
             text: `La regla para "${keyword}" ya se encuentra funcionando en el bot.`,
@@ -136,15 +140,17 @@ export class SettingsComponent implements OnInit {
           this.loadKeywords();
         },
         error: () => {
+          this.activeActionKey = null;
           this.showToast('Error al activar la regla', 'danger');
         }
       });
     }
   }
 
-  deleteKeywordSilent(id: number, keywordName: string, showAlert: boolean = true) {
+ deleteKeywordSilent(id: number, keywordName: string, showAlert: boolean = true) {
     this.http.delete(`${this.keywordsApi}/${id}`).subscribe({
       next: () => {
+        this.activeActionKey = null;
         if (showAlert) {
           this.showToast('Regla eliminada correctamente', 'success');
         } else {
@@ -157,7 +163,10 @@ export class SettingsComponent implements OnInit {
         }
         this.loadKeywords();
       },
-      error: () => this.showToast('Error al desactivar la regla', 'danger')
+      error: () => {
+        this.activeActionKey = null;
+        this.showToast('Error al desactivar la regla', 'danger');
+      }
     });
   }
 
@@ -372,4 +381,5 @@ export class SettingsComponent implements OnInit {
   onCustomKeywordChange() {
     this.isCustomKeywordDirty = true;
   }
+  activeActionKey: string | null = null; // 👈 Para saber cuál tarjeta está cargando
 }
