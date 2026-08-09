@@ -62,11 +62,11 @@ defaultProductImage: string = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3
     this.loadProducts();
   }
 
-  loadProducts() {
+loadProducts() {
     this.isLoading = true;
-    const url = this.whatsappPhone ? `${this.apiUrl}/user/${this.whatsappPhone}` : this.apiUrl;
+    const body = { whatsappPhone: this.whatsappPhone };
 
-    this.http.get<any[]>(url).subscribe({
+    this.http.post<any[]>(`${this.apiUrl}/list`, body).subscribe({
       next: (data) => {
         this.products = data || [];
         this.filteredProducts = this.products;
@@ -82,7 +82,6 @@ defaultProductImage: string = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3
       }
     });
   }
-
   openAddModal() {
     this.selectedProductForEdit = null;
     this.isProductModalOpen = true;
@@ -179,8 +178,9 @@ defaultProductImage: string = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3
         this.isLoading = true;
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('whatsappPhone', this.whatsappPhone); // 👈 Se envía oculto en el cuerpo FormData
 
-        this.http.post<any>(`${this.apiUrl}/upload-excel/${this.whatsappPhone}`, formData).subscribe({
+        this.http.post<any>(`${this.apiUrl}/upload-excel`, formData).subscribe({
           next: (res) => {
             this.isLoading = false;
             if (res && res.success) {

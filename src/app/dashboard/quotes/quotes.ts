@@ -44,17 +44,18 @@ export class QuotesComponent implements OnInit {
     this.loadQuotes();
   }
 
-  loadQuotes() {
+loadQuotes() {
     this.isLoading = true;
-    const url = this.whatsappPhone ? `${this.apiUrl}/user/${this.whatsappPhone}` : this.apiUrl;
+    const body = { whatsappPhone: this.whatsappPhone };
 
-    this.http.get<any[]>(url).subscribe({
+    this.http.post<any[]>(`${this.apiUrl}/list`, body).subscribe({
       next: (data) => {
-        this.quotes = data;
+        this.quotes = data || [];
         this.isLoading = false;
       },
       error: () => {
         this.isLoading = false;
+        this.quotes = [];
         this.showToast('No se pudieron cargar las cotizaciones', 'danger');
       }
     });
