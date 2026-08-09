@@ -203,50 +203,62 @@
       </p>
 
       <!-- 💡 TARJETAS DE ACCIÓN RÁPIDA (1 CLIC) -->
+<!-- 💡 TARJETAS DE ACCIÓN RÁPIDA (DINÁMICAS ACTIVAR / DESACTIVAR) -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
         
+        <!-- Catálogo -->
         <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 20px; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
           <div style="display: flex; flex-direction: column; gap: 4px;">
-            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;"> Catálogo de Productos</h4>
+            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;">📦 Catálogo de Productos</h4>
             <p style="margin: 0; color: #64748b; font-size: 0.82rem; line-height: 1.4;">Responde automáticamente cuando escriban "Catálogo" o "Productos".</p>
           </div>
-          <button type="button" (click)="quickDeployRule('catálogo', 'product_search', '')" style="background: #2563eb; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
-            Activar Catálogo
+          <button type="button" (click)="toggleQuickRule('catálogo', 'product_search', '')" 
+                  [style.background]="isRuleActive('catálogo') ? '#ef4444' : '#2563eb'"
+                  style="color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
+            {{ isRuleActive('catálogo') ? 'Desactivar Catálogo' : 'Activar Catálogo' }}
           </button>
         </div>
 
+        <!-- Cotizador -->
         <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 20px; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
           <div style="display: flex; flex-direction: column; gap: 4px;">
-            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;"> Cotizador Interactivo</h4>
+            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;">📝 Cotizador Interactivo</h4>
             <p style="margin: 0; color: #64748b; font-size: 0.82rem; line-height: 1.4;">Inicia el flujo de cotización cuando escriban "Cotización".</p>
           </div>
-          <button type="button" (click)="quickDeployRule('cotización', 'quote', '')" style="background: #2563eb; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
-            Activar Cotizador
+          <button type="button" (click)="toggleQuickRule('cotización', 'quote', '')" 
+                  [style.background]="isRuleActive('cotización') ? '#ef4444' : '#2563eb'"
+                  style="color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
+            {{ isRuleActive('cotización') ? 'Desactivar Cotizador' : 'Activar Cotizador' }}
           </button>
         </div>
 
+        <!-- Asesor -->
         <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 20px; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
           <div style="display: flex; flex-direction: column; gap: 4px;">
-            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;"> Derivar a Asesor</h4>
+            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;">🤝 Derivar a Asesor</h4>
             <p style="margin: 0; color: #64748b; font-size: 0.82rem; line-height: 1.4;">Atiende cuando escriban "Asesor" o "Humano".</p>
           </div>
-          <button type="button" (click)="quickDeployRule('asesor', 'text', 'Con mucho gusto te comunicaremos con un asesor humano en breve.')" style="background: #2563eb; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
-            Activar Asesor
+          <button type="button" (click)="toggleQuickRule('asesor', 'text', 'Con mucho gusto te comunicaremos con un asesor humano en breve.')" 
+                  [style.background]="isRuleActive('asesor') ? '#ef4444' : '#2563eb'"
+                  style="color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
+            {{ isRuleActive('asesor') ? 'Desactivar Asesor' : 'Activar Asesor' }}
           </button>
         </div>
 
+        <!-- Saludo -->
         <div style="background: #ffffff; border: 1.5px solid #cbd5e1; padding: 20px; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
           <div style="display: flex; flex-direction: column; gap: 4px;">
-            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;"> Saludo de Bienvenida</h4>
+            <h4 style="margin: 0; color: #1e3a8a; font-size: 1rem; font-weight: 700;">👋 Saludo de Bienvenida</h4>
             <p style="margin: 0; color: #64748b; font-size: 0.82rem; line-height: 1.4;">Responde automáticamente cuando escriban "Hola".</p>
           </div>
-          <button type="button" (click)="quickDeployRule('hola', 'text', '¡Hola! Bienvenido a nuestro servicio automático. ¿En qué podemos ayudarte hoy?')" style="background: #2563eb; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
-            Activar Saludo
+          <button type="button" (click)="toggleQuickRule('hola', 'text', '¡Hola! Bienvenido a nuestro servicio automático. ¿En qué podemos ayudarte hoy?')" 
+                  [style.background]="isRuleActive('hola') ? '#ef4444' : '#2563eb'"
+                  style="color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">
+            {{ isRuleActive('hola') ? 'Desactivar Saludo' : 'Activar Saludo' }}
           </button>
         </div>
 
       </div>
-
       <!-- 💡 1. REGLAS ACTIVAS (Estilo tarjetas idénticas arriba) -->
       <div class="active-rules-container" style="display: flex; flex-direction: column; gap: 14px; margin-top: 10px;">
         <h4 class="rules-title" style="margin: 0; color: #1e3a8a; font-size: 1.05rem; font-weight: 800;">Reglas Activas en tu Bot</h4>
