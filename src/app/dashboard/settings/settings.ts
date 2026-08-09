@@ -78,16 +78,18 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  loadSettings() {
-    this.http.get<any>(`${this.settingsApi}/${this.whatsappPhone}`).subscribe({
+ loadSettings() {
+    // Ya no va el teléfono en la URL. O viaja por el Body o por headers de autorización (Token)
+    this.http.post<any>(`${this.settingsApi}/load`, { whatsappPhone: this.whatsappPhone }).subscribe({
       next: (data) => {
         if (data) this.botSetting = data;
       },
     });
   }
 
-  loadKeywords() {
-    this.http.get<any[]>(`${this.keywordsApi}/user/${this.whatsappPhone}`).subscribe({
+loadKeywords() {
+    // Ocultamos el teléfono enviándolo en el cuerpo de la petición POST
+    this.http.post<any[]>(`${this.keywordsApi}/list`, { whatsappPhone: this.whatsappPhone }).subscribe({
       next: (data) => {
         this.keywords = data;
       },
@@ -242,7 +244,7 @@ export class SettingsComponent implements OnInit {
   }
 
   // 💡 GENERAR QR CON ALERTA DE ÉXITO SWEETALERT2
-  generateWhatsAppQR() {
+generateWhatsAppQR() {
     this.isLoadingQr = true;
     this.botStatus = 'Iniciando conexión con WhatsApp...';
     this.qrCodeImage = null;
@@ -250,14 +252,14 @@ export class SettingsComponent implements OnInit {
     const fetchQrWithRetry = (attempts = 0) => {
       if (!this.isLoadingQr) return;
 
-      this.http.get<any>(`${this.whatsappApi}/qr/${this.whatsappPhone}`).subscribe({
+      // Cambiamos a POST para proteger el número en el Body
+      this.http.post<any>(`${this.whatsappApi}/qr`, { whatsappPhone: this.whatsappPhone }).subscribe({
         next: (res) => {
           if (res && res.qr) {
             this.isLoadingQr = false;
             this.qrCodeImage = res.qr;
             this.botStatus = 'Escanea el código QR con tu WhatsApp';
             
-            // Alerta de éxito al obtener el QR
             Swal.fire({
               title: '¡Código QR Generado!',
               text: 'Ya puedes escanear el código con tu aplicación de WhatsApp.',
@@ -274,7 +276,7 @@ export class SettingsComponent implements OnInit {
             } else {
               this.isLoadingQr = false;
               this.botStatus = 'Tiempo de espera agotado';
-              this.showToast('El servidor tardó demasiado en responder. Desconecta e intenta de nuevo.', 'danger');
+              this.showToast('El servidor tardó demasiado en responder.', 'danger');
             }
           }
         },
@@ -292,13 +294,13 @@ export class SettingsComponent implements OnInit {
 
     fetchQrWithRetry();
   }
-
   // 💡 DESCONECTAR CON ALERTA DE ÉXITO SWEETALERT2
-  disconnectWhatsApp() {
+disconnectWhatsApp() {
     this.isDisconnecting = true;
     this.botStatus = 'Cerrando sesión y limpiando sistema...';
 
-    this.http.post(`${this.whatsappApi}/disconnect/${this.whatsappPhone}`, {}).subscribe({
+    // Ocultamos el teléfono en el Body de la petición POST
+    this.http.post(`${this.whatsappApi}/disconnect`, { whatsappPhone: this.whatsappPhone }).subscribe({
       next: () => {
         this.isDisconnecting = false;
         this.qrCodeImage = null;
@@ -331,7 +333,6 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
-
   showToast(message: string, color: string) {
     this.toastMessage = message;
     this.toastType = color;
@@ -380,11 +381,12 @@ export class SettingsComponent implements OnInit {
   checkInitialConnectionStatus() {
     if (!this.whatsappPhone) return;
 
-    this.http.get<any>(`${this.whatsappApi}/status/${this.whatsappPhone}`).subscribe({
+    // Protegemos la ruta usando POST para que el teléfono no aparezca en el Network URL
+    this.http.post<any>(`${this.whatsappApi}/status`, { whatsappPhone: this.whatsappPhone }).subscribe({
       next: (res) => {
         if (res && res.connected) {
           this.botStatus = 'Conectado y listo';
-          this.qrCodeImage = null; // Ocultamos el QR si ya está vinculado
+          this.qrCodeImage = null;
         } else {
           this.botStatus = 'Desconectado / Haz clic en Conectar';
         }
@@ -394,4 +396,5 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
+  
 }
