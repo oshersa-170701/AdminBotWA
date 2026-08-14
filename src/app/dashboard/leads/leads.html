@@ -59,7 +59,7 @@
             <td style="padding: 16px 20px; color: #2563eb; font-family: monospace; font-weight: 600;">#{{ l.id }}</td>
             <td style="padding: 16px 20px; font-weight: 700; color: #1e3a8a;">{{ l.client_name || 'Sin registrar' }}</td>
             <td style="padding: 16px 20px; color: #64748b;">{{ l.company_name || 'N/A' }}</td>
-            <td style="padding: 16px 20px; color: #475569;">{{ l.client_phone }}</td>
+            <td style="padding: 16px 20px; color: #475569;">{{ l.contact_phone }}</td>
             <td style="padding: 16px 20px;">
               <span class="status-badge" [style.background]="l.conversation_state === 'assigned_to_human' ? '#dbeafe' : '#fef9c3'" [style.color]="l.conversation_state === 'assigned_to_human' ? '#1e40af' : '#854d0e'" style="padding: 6px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; display: inline-block;">
                 {{ l.conversation_state === 'assigned_to_human' ? 'Atendido por Humano' : 'En Proceso' }}

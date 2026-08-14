@@ -58,7 +58,7 @@
           <tr *ngFor="let q of quotes" style="border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 0.9rem;">
             <td style="padding: 16px 20px; color: #2563eb; font-family: monospace; font-weight: 600;">#{{ q.id }}</td>
             <td style="padding: 16px 20px; font-weight: 700; color: #1e3a8a;">{{ q.client_name }}</td>
-            <td style="padding: 16px 20px; color: #64748b;">{{ q.client_phone }}</td>
+            <td style="padding: 16px 20px; color: #64748b;">{{ q.contact_phone }}</td>
             <td style="padding: 16px 20px; color: #475569; max-width: 250px;">{{ q.products_requested }}</td>
             <td style="padding: 16px 20px;">
               <span class="status-badge" [style.background]="q.status === 'Pendiente' ? '#fef9c3' : '#dcfce7'" [style.color]="q.status === 'Pendiente' ? '#854d0e' : '#166534'" style="padding: 6px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; display: inline-block;">
